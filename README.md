@@ -1,3 +1,5 @@
 # Time Rhymes
 
-A clock that shows a short poem for every hour and minute
+A poetic clock: every minute, the script displays a AI-generated poem inspired by the time of the day.
+
+Based on OpenAI ChatGPT, it's a great way to add some color and creativity to your workspace!
