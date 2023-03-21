@@ -16,6 +16,7 @@ height = 480
 # Create screen surface
 screen = pygame.display.set_mode((width, height), pygame.FULLSCREEN)
 
+
 # set the window title
 pygame.display.set_caption("TimeRhymes")
 
@@ -25,6 +26,7 @@ pygame.mouse.set_visible(False)
 
 # Function to create ChatGPT response
 def get_response(messages: list):
+    global response
 
     # Load OpenAI API key
     with open("secrets.json") as f:
@@ -38,7 +40,7 @@ def get_response(messages: list):
     return response.choices[0].message
 
 
-def showMessage(message):
+def show_message(message):
     # Generate random color
     background_color = (
         random.randint(128, 255),
@@ -78,6 +80,7 @@ def showMessage(message):
     # Update display
     pygame.display.flip()
 
+
 while True:
 
     # Initialize chatGPT
@@ -88,31 +91,29 @@ while True:
     hour = now.strftime("%H:%M")
 
     # compose prompt for chatGPT
-    prompt = (
-        "write a 2 lines poem in alternate rhyme on "
-        + hour
-        + "but you must use time in  letters and not numbers. you must put time in capital letters"
-    )
+    prompt = ("write a 2 lines poem in alternate rhyme on " + hour +
+              "but you must use hour and minute in capital letters and not numbers")
 
     # receive chatGPT response
     messages.append({"role": "user", "content": prompt})
     response = get_response(messages=messages)
     poem = response["content"]
 
-    print(response)
+    print(prompt)
     print(poem)
 
     text = poem.lstrip("\n")
     text = text.split("\n")
 
-    showMessage(text)
+    show_message(text)
 
-    # Detect key press ESC to exit
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            pygame.quit()
-            exit()
+    for i in range(int(60 - time.time() % 60)):
 
-    # wait until the next minute then loop
-    time.sleep(60 - time.time() % 60)
+        # Detect key press ESC to exit
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                exit()
 
+        # Wait for one second
+        time.sleep(1)
